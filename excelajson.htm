@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript" src="xlsx.mini.js" ></script>
+<script>
+		let excelFile;
+		function showfile(obj) {
+			if(!obj.files) {
+				return;
+			}
+			const f = obj.files[0];
+			const reader = new FileReader();
+			reader.readAsBinaryString(f);
+			reader.onload = function(e) {
+				const data = e.target.result;
+				excelFile = XLSX.read(data, {
+					type: 'binary'
+				});
+				const str = XLSX.utils.sheet_to_json(excelFile.Sheets[excelFile.SheetNames[0]])
+                console.log(str)
+                //devuelve un array de objetos de la tabla de excel. 
+                //El encabezado debe siempre venir en la primera fila
+                document.getElementById('excelFile').innerHTML = str[0].qurz
+                const lat = {data1:'lala',data2:{lolo:'lala',segundo:'ok'}}
+                console.log(lat.data2.lolo)
+				
+			}
+		}
+	</script>
+
+<div class="up_btn">
+<input type="file" id="xFile" name="" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="showfile(this)"></div>
+
+<div id="excelFile"></div>
+</body>
+</html>
